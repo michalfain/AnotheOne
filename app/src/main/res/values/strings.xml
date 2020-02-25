@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">ChartIt</string>
+    <string name="title_activity_view_charts">ViewCharts</string>
+</resources>
