@@ -27,10 +27,10 @@ import static com.example.anotheone.AddChart.my1;
 import static com.example.anotheone.AddChart.myPref;
 
 public class ViewCharts extends AppCompatActivity {
-   static Map<String,AddChart> charts = new HashMap<String,AddChart>();
+   static ArrayList<String> charts = new ArrayList<>();
     static ArrayAdapter arrayAdapter;
 //    EditText etTitle, etchord1;
-  
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,10 +44,10 @@ public class ViewCharts extends AppCompatActivity {
                 , Context.MODE_PRIVATE);
         HashSet<String> set = (HashSet<String>)sharedPreferences.getStringSet("charts", null);
         if(set == null){
-            charts.put("Example chart",new AddChart());
+            charts.add("Example chart");
 
         }else {
-            charts = new HashMap<String,AddChart>();
+            charts = new ArrayList<String>();
         }
 
 
@@ -82,6 +82,7 @@ public class ViewCharts extends AppCompatActivity {
         lvCharts.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                final int itemToDelete = position;
 
                 new AlertDialog.Builder(ViewCharts.this)
                         .setIcon(android.R.drawable.ic_dialog_alert)
@@ -94,8 +95,8 @@ public class ViewCharts extends AppCompatActivity {
                                 arrayAdapter.notifyDataSetChanged();
                                 SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("com.example.anotheone"
                                         ,Context.MODE_PRIVATE);
-                                Map<String,AddChart> chartsMap = new HashMap<>(ViewCharts.charts);
-                                sharedPreferences.edit().putStringSet("charts", chartsMap.keySet()).apply();
+                                HashSet<String> set = new HashSet<>(ViewCharts.charts);
+                                sharedPreferences.edit().putStringSet("charts", set).apply();
                             }
                         })
                         .setNegativeButton("NO!", null)
