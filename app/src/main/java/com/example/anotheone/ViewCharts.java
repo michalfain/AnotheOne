@@ -20,15 +20,18 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
-import static com.example.anotheone.AddChart.etchord1;
-import static com.example.anotheone.AddChart.my1;
-import static com.example.anotheone.AddChart.myPref;
+//import static com.example.anotheone.AddChart.etchord1;
+//import static com.example.anotheone.AddChart.my1;
+//import static com.example.anotheone.AddChart.myPref;
 
 public class ViewCharts extends AppCompatActivity {
-   static ArrayList<String> charts = new ArrayList<>();
+    static Map<String, List<String>> charts = new HashMap<>();
+    static ArrayList<String> chartsList;
     static ArrayAdapter arrayAdapter;
+
 //    EditText etTitle, etchord1;
 
     @Override
@@ -43,46 +46,63 @@ public class ViewCharts extends AppCompatActivity {
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("com.example.anotheone"
                 , Context.MODE_PRIVATE);
         HashSet<String> set = (HashSet<String>)sharedPreferences.getStringSet("charts", null);
-        if(set == null){
-            charts.add("Example chart");
-
-        }else {
-            charts = new ArrayList<String>();
-        }
-
-
-        arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, charts);
+        chartsList=new ArrayList(charts.keySet());
+        arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,chartsList );
         lvCharts.setAdapter(arrayAdapter);
+
+
+//        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("com.example.anotheone"
+//                , Context.MODE_PRIVATE);
+//        HashSet<String> set = (HashSet<String>)sharedPreferences.getStringSet("charts", null);
+//        if(set == null){
+//            charts.add("Example chart");
+//
+//        }else {
+//            charts = new ArrayList<String>( );
+//        }
+
+
+//        arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, charts);
+//        lvCharts.setAdapter(arrayAdapter);
 
         lvCharts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getApplicationContext(), AddChart.class);
-//                String tittle = etTitle.getText().toString().trim();
-//                intent.putExtra("tittle", tittle);
-//                String myc1 = etchord1.toString().trim();
-                intent.putExtra("chartId", position);
-//                SharedPreferences sharedPreferences = getSharedPreferences("info", MODE_PRIVATE);
-//                etTitle.setText(sharedPreferences.getString(tittle, null));
-//                etchord1.setText(sharedPreferences.getString(myc1,null));
-
-//                SharedPreferences.Editor editor = sharedPreferences.edit();
-//                if(etTitle.getText().length() > 0 || etchord1.getText().length() > 0){
-//                    editor.putString(tittle, etTitle.getText().toString());
-//                    editor.putString(myc1, etchord1.getText().toString());
-//                    editor.commit();
-//                }
-
+                intent.putExtra("chartId",chartsList.get(position));
                 startActivity(intent);
-//                retrive();
             }
         });
+
+//        lvCharts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Intent intent = new Intent(getApplicationContext(), AddChart.class);
+////                String tittle = etTitle.getText().toString().trim();
+////                intent.putExtra("tittle", tittle);
+////                String myc1 = etchord1.toString().trim();
+//                intent.putExtra("chartId", position);
+////                SharedPreferences sharedPreferences = getSharedPreferences("info", MODE_PRIVATE);
+////                etTitle.setText(sharedPreferences.getString(tittle, null));
+////                etchord1.setText(sharedPreferences.getString(myc1,null));
+//
+////                SharedPreferences.Editor editor = sharedPreferences.edit();
+////                if(etTitle.getText().length() > 0 || etchord1.getText().length() > 0){
+////                    editor.putString(tittle, etTitle.getText().toString());
+////                    editor.putString(myc1, etchord1.getText().toString());
+////                    editor.commit();
+////                }
+//
+//                startActivity(intent);
+////                retrive();
+//            }
+//        });
 
 
         lvCharts.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                final int itemToDelete = position;
+//                final int itemToDelete = position;
 
                 new AlertDialog.Builder(ViewCharts.this)
                         .setIcon(android.R.drawable.ic_dialog_alert)
@@ -95,7 +115,7 @@ public class ViewCharts extends AppCompatActivity {
                                 arrayAdapter.notifyDataSetChanged();
                                 SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("com.example.anotheone"
                                         ,Context.MODE_PRIVATE);
-                                HashSet<String> set = new HashSet<>(ViewCharts.charts);
+                                HashSet<String> set = new HashSet<String>(ViewCharts.charts.keySet());
                                 sharedPreferences.edit().putStringSet("charts", set).apply();
                             }
                         })
