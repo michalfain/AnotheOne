@@ -23,16 +23,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-//import static com.example.anotheone.AddChart.etchord1;
-//import static com.example.anotheone.AddChart.my1;
-//import static com.example.anotheone.AddChart.myPref;
 
 public class ViewCharts extends AppCompatActivity {
     static Map<String, List<String>> charts = new HashMap<>();
     static ArrayList<String> chartsList;
     static ArrayAdapter arrayAdapter;
-
-//    EditText etTitle, etchord1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +35,6 @@ public class ViewCharts extends AppCompatActivity {
         setContentView(R.layout.activity_view_charts);
 
         ListView lvCharts = (ListView) findViewById(R.id.lvCharts);
-//        etTitle = findViewById(R.id.edTitle);
-//        etchord1 = findViewById(R.id.chord1);
 
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("com.example.anotheone"
                 , Context.MODE_PRIVATE);
@@ -50,20 +43,6 @@ public class ViewCharts extends AppCompatActivity {
         arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,chartsList );
         lvCharts.setAdapter(arrayAdapter);
 
-
-//        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("com.example.anotheone"
-//                , Context.MODE_PRIVATE);
-//        HashSet<String> set = (HashSet<String>)sharedPreferences.getStringSet("charts", null);
-//        if(set == null){
-//            charts.add("Example chart");
-//
-//        }else {
-//            charts = new ArrayList<String>( );
-//        }
-
-
-//        arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, charts);
-//        lvCharts.setAdapter(arrayAdapter);
 
         lvCharts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -74,36 +53,12 @@ public class ViewCharts extends AppCompatActivity {
             }
         });
 
-//        lvCharts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent intent = new Intent(getApplicationContext(), AddChart.class);
-////                String tittle = etTitle.getText().toString().trim();
-////                intent.putExtra("tittle", tittle);
-////                String myc1 = etchord1.toString().trim();
-//                intent.putExtra("chartId", position);
-////                SharedPreferences sharedPreferences = getSharedPreferences("info", MODE_PRIVATE);
-////                etTitle.setText(sharedPreferences.getString(tittle, null));
-////                etchord1.setText(sharedPreferences.getString(myc1,null));
-//
-////                SharedPreferences.Editor editor = sharedPreferences.edit();
-////                if(etTitle.getText().length() > 0 || etchord1.getText().length() > 0){
-////                    editor.putString(tittle, etTitle.getText().toString());
-////                    editor.putString(myc1, etchord1.getText().toString());
-////                    editor.commit();
-////                }
-//
-//                startActivity(intent);
-////                retrive();
-//            }
-//        });
 
 
         lvCharts.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
 //                final int itemToDelete = position;
-
                 new AlertDialog.Builder(ViewCharts.this)
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setTitle("Are you sure?")
@@ -111,7 +66,7 @@ public class ViewCharts extends AppCompatActivity {
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                charts.remove(position);
+                                chartsList.remove(position);
                                 arrayAdapter.notifyDataSetChanged();
                                 SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("com.example.anotheone"
                                         ,Context.MODE_PRIVATE);
