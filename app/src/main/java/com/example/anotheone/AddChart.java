@@ -156,6 +156,12 @@ public class AddChart extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        save();
+        super.onBackPressed();
+    }
+
     public void resetChart(){
         etTitle.setText("");
         etFirstVerse.setText("");

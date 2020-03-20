@@ -26,7 +26,7 @@ import java.util.Map;
 
 public class ViewCharts extends AppCompatActivity {
     static Map<String, List<String>> charts = new HashMap<>();
-    static ArrayList<String> chartsList;
+    static ArrayList<String> chartsList = new ArrayList<>();
     static ArrayAdapter arrayAdapter;
 
     @Override
@@ -39,7 +39,12 @@ public class ViewCharts extends AppCompatActivity {
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("com.example.anotheone"
                 , Context.MODE_PRIVATE);
         HashSet<String> set = (HashSet<String>)sharedPreferences.getStringSet("charts", null);
-        chartsList=new ArrayList(charts.keySet());
+        if(set == null) {
+            chartsList.add("new");
+        }else {
+            chartsList = new ArrayList(charts.keySet());
+
+        }
         arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,chartsList );
         lvCharts.setAdapter(arrayAdapter);
 
@@ -49,6 +54,10 @@ public class ViewCharts extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getApplicationContext(), AddChart.class);
                 intent.putExtra("chartId",chartsList.get(position));
+                SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("com.example.anotheone"
+                        , Context.MODE_PRIVATE);
+                HashSet<String> set = new HashSet<String>(ViewCharts.charts.keySet());
+                sharedPreferences.edit().putStringSet("charts", set).apply();
                 startActivity(intent);
             }
         });
@@ -58,7 +67,6 @@ public class ViewCharts extends AppCompatActivity {
         lvCharts.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-//                final int itemToDelete = position;
                 new AlertDialog.Builder(ViewCharts.this)
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setTitle("Are you sure?")
@@ -68,8 +76,9 @@ public class ViewCharts extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 chartsList.remove(position);
                                 arrayAdapter.notifyDataSetChanged();
+
                                 SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("com.example.anotheone"
-                                        ,Context.MODE_PRIVATE);
+                                        , Context.MODE_PRIVATE);
                                 HashSet<String> set = new HashSet<String>(ViewCharts.charts.keySet());
                                 sharedPreferences.edit().putStringSet("charts", set).apply();
                             }
